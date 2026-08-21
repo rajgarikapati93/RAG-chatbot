@@ -7,6 +7,7 @@ import docx2txt
 import chromadb
 import tempfile
 import os
+import uuid
 
 st.set_page_config(page_title="Ask My Documents", page_icon="📄")
 st.title("📄 Upload files you would like me to understand")
@@ -26,11 +27,12 @@ llm = load_llm()
 
 if "chroma_client" not in st.session_state:
     st.session_state.chroma_client = chromadb.Client()
-    st.session_state.collection = st.session_state.chroma_client.create_collection(
-        name="session_docs"
+    unique_name = f"session_docs_{uuid.uuid4().hex}"
+    st.session_state.collection = st.session_state.chroma_client.get_or_create_collection(
+        name=unique_name
     )
     st.session_state.processed_files = []
-    st.session_state.chat_history = []  # NEW: stores the conversation so far
+    st.session_state.chat_history = []
 
 
 def load_text_from_file(file_path):
