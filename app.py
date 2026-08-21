@@ -9,7 +9,7 @@ import tempfile
 import os
 import uuid
 
-st.set_page_config(page_title="Ask My Documents", page_icon="📄")
+st.set_page_config(page_title="Knowly", page_icon="📄")
 st.title("📄 Upload files you would like me to understand")
 st.caption("Upload a PDF, DOCX, or TXT file and ask questions about it.")
 
