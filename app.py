@@ -33,6 +33,7 @@ if "chroma_client" not in st.session_state:
     )
     st.session_state.processed_files = []
     st.session_state.chat_history = []
+    st.session_state.uploader_key = 0
 
 
 def load_text_from_file(file_path):
@@ -97,7 +98,11 @@ Answer:"""
 
 
 # --- Upload UI ---
-uploaded_file = st.file_uploader("Upload a document", type=["pdf", "docx", "txt", "md"])
+uploaded_file = st.file_uploader(
+    "Upload a document",
+    type=["pdf", "docx", "txt", "md"],
+    key=f"uploader_{st.session_state.uploader_key}"
+)
 
 if uploaded_file is not None and uploaded_file.name not in st.session_state.processed_files:
     with st.spinner(f"Processing {uploaded_file.name}..."):
@@ -116,6 +121,7 @@ if st.session_state.processed_files:
         )
         st.session_state.processed_files = []
         st.session_state.chat_history = []
+        st.session_state.uploader_key += 1
         st.rerun()
 
 st.divider()
