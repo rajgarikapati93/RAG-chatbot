@@ -106,6 +106,17 @@ if uploaded_file is not None and uploaded_file.name not in st.session_state.proc
 
 if st.session_state.processed_files:
     st.info(f"Documents in this session: {', '.join(st.session_state.processed_files)}")
+    
+if st.session_state.processed_files:
+    if st.button("🗑️ Clear session"):
+        st.session_state.chroma_client.delete_collection(st.session_state.collection.name)
+        unique_name = f"session_docs_{uuid.uuid4().hex}"
+        st.session_state.collection = st.session_state.chroma_client.get_or_create_collection(
+            name=unique_name
+        )
+        st.session_state.processed_files = []
+        st.session_state.chat_history = []
+        st.rerun()
 
 st.divider()
 
